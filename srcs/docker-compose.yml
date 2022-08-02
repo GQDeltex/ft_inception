@@ -1,11 +1,16 @@
 version: '3.7'
 
 services:
-  mariadb:
-    build:
-      context: requirements/mariadb
+  #mariadb:
+  #build: requirements/mariadb
+  #ports:
+  #- 3306:3306
+  #networks:
+  #- main_net
+  nginx:
+    build: requirements/nginx
     ports:
-      - 3306:3306
+      - 80:80
     networks:
       - main_net
 
