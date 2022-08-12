@@ -2,9 +2,11 @@ SRC :=	srcs/docker-compose.yml
 
 DCMP :=	docker-compose
 
-all: $(SRC)
-	$(DCMP) -f $(SRC) up --build --remove-orphans -d
+all: $(SRC) up
 	$(DCMP) -f $(SRC) logs --tail 100 -f
+
+up:
+	$(DCMP) -f $(SRC) up --build --remove-orphans -d
 
 clean:
 	$(DCMP) -f $(SRC) stop
