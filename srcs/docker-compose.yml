@@ -1,18 +1,42 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  #mariadb:
-  #build: requirements/mariadb
-  #ports:
-  #- 3306:3306
-  #networks:
-  #- main_net
+  mariadb:
+    build: requirements/mariadb
+    ports:
+      - 3306:3306
+    networks:
+      - main_net
+
   nginx:
     build: requirements/nginx
+    depends_on:
+      - wordpress
     ports:
       - 80:80
     networks:
       - main_net
+    volumes:
+      - wordpress_data:/var/www/html:ro
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build: requirements/wordpress
+    ports:
+      - 9000:9000
+    networks:
+      - main_net
+    volumes:
+      - wordpress_data:/var/www/html
 
 networks:
   main_net:
+
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './data/wordpress'
