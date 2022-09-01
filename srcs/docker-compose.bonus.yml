@@ -8,6 +8,13 @@ services:
       - main_net
     hostname: redis
     restart: unless-stopped
+  adminer:
+    build:
+      context: requirements/bonus/adminer
+    networks:
+      - main_net
+    hostname: adminer
+    restart: unless-stopped
 
 networks:
   main_net:

@@ -17,6 +17,7 @@ RUN sed -i -e "s/{{ DB_NAME }}/$MYSQL_DATABASE/g" /wp-config.php && sed -i -e "s
 
 WORKDIR /var/www/html
 EXPOSE 9000
+VOLUME /var/www/html
 
 USER www-data
 CMD ["/entrypoint.sh", "/usr/etc/php-fpm.conf"]
