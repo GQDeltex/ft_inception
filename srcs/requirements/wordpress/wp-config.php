@@ -17,6 +17,8 @@
  *
  * @package WordPress
  */
+// ** Redis settings ** //
+define( 'WP_REDIS_HOST', 'redis' );
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
