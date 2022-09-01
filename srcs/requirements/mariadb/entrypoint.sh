@@ -1,3 +1,5 @@
+export $(cat /env | xargs)
+
 if [ -d "/var/lib/mysql/" ]; then
     if [ "$(ls -A /var/lib/mysql/)" ]; then
         echo "Data already exists"
@@ -14,25 +16,25 @@ if [ -z "$DB_EXISTS" ]; then
         --default-time-zone=SYSTEM
     echo "Starting temporary server, to create DATABASE, USER, etc."
     mysqld &
-    MARIADB_PID=$!
+    MYSQL_PID=$!
     sleep 5
 
     echo "Creating DATABASE and USER"
     mysql --host=localhost --user=root << EOF
-CREATE DATABASE IF NOT EXISTS \`$MARIADB_DATABASE\`;
-CREATE USER IF NOT EXISTS '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';
-GRANT ALL ON \`$MARIADB_DATABASE\`.* TO '$MARIADB_USER'@'%';
+CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;
+CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+ALTER USER 'root'@localhost IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+GRANT ALL ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
     echo "Loading prefilled data for wordpress"
-    mysql --host=localhost --user=root $MARIADB_DATABASE < /initdb.sql
+    mysql --host=localhost --user=root "${MYSQL_DATABASE}" --password="${MYSQL_ROOT_PASSWORD}" < /initdb.sql
 
-    sleep 5
+    sleep 1
     echo "Stopping temporary server"
-    kill -15 $MARIADB_PID
+    kill -15 $MYSQL_PID
 fi
 
-
 echo "Starting MariaDB"
-mysqld --port="$MARIADB_PORT"
+mysqld --port=3306
