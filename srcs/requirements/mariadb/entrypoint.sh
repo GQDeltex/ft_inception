@@ -1,3 +1,4 @@
+set -e
 export $(cat /env | xargs)
 
 if [ -d "/var/lib/mysql/" ]; then
@@ -14,10 +15,14 @@ if [ -z "$DB_EXISTS" ]; then
         --skip-test-db\
         --auth-root-authentication-method=normal\
         --default-time-zone=SYSTEM
+
     echo "Starting temporary server, to create DATABASE, USER, etc."
     mysqld &
     MYSQL_PID=$!
-    sleep 5
+    COUNTER=0
+    until mysqladmin ping || (( COUNTER++ >= 5 )); do
+        sleep 0.5
+    done
 
     echo "Creating DATABASE and USER"
     mysql --host=localhost --user=root << EOF
@@ -31,7 +36,6 @@ EOF
     echo "Loading prefilled data for wordpress"
     mysql --host=localhost --user=root "${MYSQL_DATABASE}" --password="${MYSQL_ROOT_PASSWORD}" < /initdb.sql
 
-    sleep 1
     echo "Stopping temporary server"
     kill -15 $MYSQL_PID
 fi

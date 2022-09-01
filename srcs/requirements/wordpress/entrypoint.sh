@@ -1,9 +1,10 @@
 #!/bin/sh
+set -e
 
 alias wp="$(which php) /usr/local/bin/wp"
 
 echo "Adding wordpress"
-wp core download
+wp core download || echo "Ignoring"
 
 echo "Loading config file"
 cat /wp-config.php > ./wp-config.php
