@@ -13,5 +13,6 @@ ENV MARIADB_PASSWORD=mariadb
 ENV MARIADB_DATABASE=mariadb
 
 COPY ./entrypoint.sh /entrypoint.sh
+COPY ./initdb.sql /initdb.sql
 USER mysql
 CMD /entrypoint.sh

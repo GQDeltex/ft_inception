@@ -25,6 +25,9 @@ GRANT ALL ON \`$MARIADB_DATABASE\`.* TO '$MARIADB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
+    echo "Loading prefilled data for wordpress"
+    mysql --host=localhost --user=root $MARIADB_DATABASE < /initdb.sql
+
     sleep 5
     echo "Stopping temporary server"
     kill -15 $MARIADB_PID
