@@ -1,8 +1,8 @@
 #!/bin/sh
 echo "Downloading wordpress archive"
-wget https://wordpress.org/latest.zip latest.zip
+wget -q https://wordpress.org/latest.zip latest.zip
 echo "Deflating Wordpress archive"
-unzip latest.zip
+unzip -q latest.zip
 rm latest.zip
 echo "Moving to correct folder"
 mv ./wordpress/* ./

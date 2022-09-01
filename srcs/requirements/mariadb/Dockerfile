@@ -7,12 +7,15 @@ RUN echo -e "[mysqld]\nskip-networking=0" >> /etc/my.cnf
 
 EXPOSE 3306
 VOLUME /var/lib/mysql/
-ENV MARIADB_PORT=3306
-ENV MARIADB_USER=mariadb
-ENV MARIADB_PASSWORD=mariadb
-ENV MARIADB_DATABASE=mariadb
 
-COPY ./entrypoint.sh /entrypoint.sh
+ARG MYSQL_ROOT_PASSWORD
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG MYSQL_DATABASE
+
 COPY ./initdb.sql /initdb.sql
+COPY ./entrypoint.sh /entrypoint.sh
+RUN echo -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD\nMYSQL_USER=$MYSQL_USER\nMYSQL_PASSWORD=$MYSQL_PASSWORD\nMYSQL_DATABASE=$MYSQL_DATABASE" > /env
+
 USER mysql
 CMD /entrypoint.sh
