@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  redis:
+    build:
+      context: requirements/bonus/redis
+    networks:
+      - main_net
+    hostname: redis
+    restart: unless-stopped
+
+networks:
+  main_net:
