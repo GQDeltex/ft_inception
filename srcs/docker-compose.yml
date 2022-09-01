@@ -14,6 +14,7 @@ services:
     networks:
       - main_net
     hostname: mariadb
+    restart: unless-stopped
     volumes:
       - mariadb_data:/var/lib/mysql
 
@@ -30,6 +31,7 @@ services:
       - main_net
     volumes:
       - wordpress_data:/var/www/html:ro
+    restart: unless-stopped
     hostname: nginx
 
   wordpress:
@@ -47,6 +49,7 @@ services:
       - main_net
     volumes:
       - wordpress_data:/var/www/html
+    restart: unless-stopped
     hostname: wordpress
 
 networks:
