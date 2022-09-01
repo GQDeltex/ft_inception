@@ -9,8 +9,6 @@ services:
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         - MYSQL_DATABASE=${MYSQL_DATABASE}
-    ports:
-      - 3306:3306
     networks:
       - main_net
     hostname: mariadb
@@ -26,7 +24,7 @@ services:
     depends_on:
       - wordpress
     ports:
-      - 80:80
+      - 443:443
     networks:
       - main_net
     volumes:
@@ -43,8 +41,6 @@ services:
         - MYSQL_DATABASE=${MYSQL_DATABASE}
     depends_on:
       - mariadb
-    ports:
-      - 9000:9000
     networks:
       - main_net
     volumes:
