@@ -23,7 +23,16 @@ services:
       - '40000-40009:40000-40009/tcp'
     networks:
       - main_net
-    hostname: adminer
+    hostname: ftp
     restart: unless-stopped
     volumes:
       - wordpress_data:/data
+  webpage:
+    build:
+      context: requirements/bonus/webpage
+    networks:
+      - main_net
+    hostname: webpage
+    ports:
+      - '8080:80/tcp'
+    restart: unless-stopped
